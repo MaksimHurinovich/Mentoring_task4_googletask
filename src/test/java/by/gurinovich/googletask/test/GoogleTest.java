@@ -1,9 +1,10 @@
 package by.gurinovich.googletask.test;
 
 import by.gurinovich.googletask.core.Driver;
-import by.gurinovich.googletask.pageobject.GoogleMainPage;
-import by.gurinovich.googletask.pageobject.GoogleSearchResultsPage;
+import by.gurinovich.googletask.pageobject.google.GoogleMainPage;
+import by.gurinovich.googletask.pageobject.google.GoogleSearchResultsPage;
 import by.gurinovich.googletask.util.JsonConverter;
+import by.gurinovich.googletask.util.TextUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -66,11 +67,10 @@ public class GoogleTest {
 
     @Test(dataProvider = "googleDP")
     public void linkContainsRequestTest(String request) {
-        mainPage.typeRequest(request);
-        mainPage.doSearch();
-        List<String> wordsInRequest = textToWords(request);
+        mainPage.doSearch(request);
+        List<String> wordsInRequest = TextUtil.textToWords(request);
         for (int i = 0; i < resultsPage.resultListSize(); i++) {
-            List<String> linkTextWords = textToWords(resultsPage.getLinkText(resultsPage.getLink(i)));
+            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getLink(i)));
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i);
         }
         resultsPage.navigateBack();
@@ -79,8 +79,7 @@ public class GoogleTest {
 
     @Test(dataProvider = "googleDP")
     public void checkStatusCodeTest(String request) throws IOException {
-        mainPage.typeRequest(request);
-        mainPage.doSearch();
+        mainPage.doSearch(request);
         CloseableHttpClient client = HttpClients.createSystem();
         for (int i = 0; i < resultsPage.resultListSize(); i++) {
             String url = resultsPage.getLink(i).getAttribute("href");
@@ -95,8 +94,7 @@ public class GoogleTest {
 
     @Test(dataProvider = "googleDP")
     public void checkResponseContentTest(String request) throws IOException {
-        mainPage.typeRequest(request);
-        mainPage.doSearch();
+        mainPage.doSearch(request);
         CloseableHttpClient client = HttpClients.createSystem();
         for (int i = 0; i < resultsPage.resultListSize(); i++) {
             String url = resultsPage.getLink(i).getAttribute("href");
@@ -108,14 +106,12 @@ public class GoogleTest {
         }
         softAssert.assertAll();
     }
+
     @DataProvider(name = "googleDP")
     public Object[] googleDataProvider() {
         ArrayList<String> requests = JsonConverter.getRequests("google");
         return requests.toArray();
     }
 
-    private List<String> textToWords(String text) {
-        return Arrays.asList(text.toUpperCase().replaceAll("[{}\\[\\](),.\"!?<>:;]", "").split(" "));
-    }
 }
 

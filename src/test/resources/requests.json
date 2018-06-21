@@ -2,7 +2,7 @@
   {
     "searcher": "GOOGLE",
     "requests": [
-      "house 399",
+      "chair 399",
       "my name is jeff",
       "how to grow"
     ],
@@ -15,13 +15,13 @@
   {
     "searcher": "YANDEX",
     "requests": [
-      "who is justin bieber",
-      "archive pronunciation",
-      "quick maths"
+      "google",
+      "abba mamma mia",
+      "2 + 2 is 4 quick maths"
     ],
     "wrongRequests": [
-      "asdsfgnmsgahhrhrehn",
-      "EPAMEPAMEPAMEPAMEPAM",
+      "asdsfgnmsgahhrhrehnfhfhffdfdfgdgdg",
+      "xzxzxzxzxzxzzxzxzxzxzxzxzxzxzxzxzxzxzxzxzxzx",
       "efefdfdfdfdfffffdgffbfht"
     ]
   },

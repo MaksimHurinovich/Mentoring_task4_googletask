@@ -1,5 +1,6 @@
-package by.gurinovich.googletask.pageobject;
+package by.gurinovich.googletask.pageobject.google;
 
+import by.gurinovich.googletask.pageobject.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +11,7 @@ public class GoogleSearchResultsPage extends AbstractPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 
-    @FindBy(xpath = "//h3[@class='r']//a")
+    @FindBy(xpath = "//div[@class='rc']/h3/a")
     private List<WebElement> resultList;
 
     @FindBy(xpath = "//input[@id='lst-ib']")
