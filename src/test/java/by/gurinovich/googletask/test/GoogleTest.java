@@ -18,7 +18,6 @@ import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,15 +48,11 @@ public class GoogleTest {
         Assert.assertNotEquals(variations, 0, "ERROR: autocomplete on request '" + request + "' is wrong");
     }
 
-    @Test
-    public void autocompleteNotAppearsTest() {
-        ArrayList<String> wrongRequests = JsonConverter.getWrongRequests("google");
-        for (String request : wrongRequests) {
+    @Test(dataProvider = "badDP")
+    public void autocompleteNotAppearsTest(String request) {
             mainPage.typeWrongRequest(request);
-            softAssert.assertEquals(mainPage.getVariationsCount(), 0, "ERROR: autocomplete on request '" + request + "' is wrong");
+            Assert.assertEquals(mainPage.getVariationsCount(), 0, "ERROR: autocomplete on request '" + request + "' is wrong");
             mainPage.clearField();
-        }
-        softAssert.assertAll();
     }
 
     @Test
@@ -113,5 +108,10 @@ public class GoogleTest {
         return requests.toArray();
     }
 
+    @DataProvider(name = "badDP")
+    public Object[] badRequestsProvider(){
+        ArrayList<String> requests = JsonConverter.getWrongRequests("google");
+        return requests.toArray();
+    }
 }
 

@@ -6,6 +6,6 @@ import java.util.List;
 public class TextUtil {
 
     public static List<String> textToWords(String text) {
-        return Arrays.asList(text.toUpperCase().replaceAll("[{}\\[\\](),.\"!?<>:;/]", "").split(" "));
+        return Arrays.asList(text.toUpperCase().replaceAll("[@{}\\[\\](),.\"!?<>:;/]", "").split(" "));
     }
 }
