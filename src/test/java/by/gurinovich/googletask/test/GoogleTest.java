@@ -1,9 +1,13 @@
-package by.gurinovich.googletask.tests;
+package by.gurinovich.googletask.test;
 
 import by.gurinovich.googletask.core.Driver;
-import by.gurinovich.googletask.pageobjects.GoogleMainPage;
-import by.gurinovich.googletask.pageobjects.GoogleSearchResultsPage;
+import by.gurinovich.googletask.pageobject.GoogleMainPage;
+import by.gurinovich.googletask.pageobject.GoogleSearchResultsPage;
 import by.gurinovich.googletask.util.JsonConverter;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -11,6 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,6 +75,21 @@ public class GoogleTest {
         }
         resultsPage.navigateBack();
         softAssert.assertAll();
+    }
+
+    @Test(dataProvider = "googleDP")
+    public void checkStatusCodeTest(String request) throws IOException {
+        mainPage.typeRequest(request);
+        mainPage.doSearch();
+        CloseableHttpClient client = HttpClients.createSystem();
+        for(int i = 0; i < resultsPage.resultListSize(); i++){
+            String url = resultsPage.getLink(i).getAttribute("href");
+            HttpGet httpGet = new HttpGet(url);
+            CloseableHttpResponse response = client.execute(httpGet);
+            int statusCode = response.getStatusLine().getStatusCode();
+            softAssert.assertEquals(statusCode, 200, "ERROR: in link#" + i + " status code is " + statusCode);
+            resultsPage.navigateBack();
+        }
     }
 
     @DataProvider(name = "googleDP")
