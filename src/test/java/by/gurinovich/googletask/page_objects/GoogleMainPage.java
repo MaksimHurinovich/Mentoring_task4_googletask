@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class GoogleMainPage extends AbstractSearcher {
+public class GoogleMainPage extends AbstractPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 

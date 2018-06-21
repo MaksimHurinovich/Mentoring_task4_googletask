@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class JsonConverter {
 
-    public static ArrayList<String> convert(String searcher) throws FileNotFoundException {
+    public static ArrayList<String> convertJsonSearcher(String searcher) throws FileNotFoundException {
         ArrayList<String> requests = new ArrayList<>();
         JsonArray array = new JsonParser()
                 .parse(new FileReader("src/test/resources/requests.json"))
