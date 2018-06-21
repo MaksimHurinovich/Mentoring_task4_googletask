@@ -1,11 +1,13 @@
-package by.gurinovich.googletask.page_objects;
+package by.gurinovich.googletask.pageobjects;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class GoogleMainPage extends AbstractPage {
 
@@ -40,33 +42,38 @@ public class GoogleMainPage extends AbstractPage {
 
     public GoogleMainPage(WebDriver driver) {
         super(driver);
-        driver.navigate().to(GOOGLE_URL);
+        driver.get(GOOGLE_URL);
     }
 
-    public void typeRequest(String request){
+    public void typeWrongRequest(String request) {
         searchTextField.sendKeys(request);
-        new WebDriverWait(driver, 3);
+        new WebDriverWait(driver, 2).until(ExpectedConditions.invisibilityOfAllElements(variations));
     }
 
-    public int getVariationsCount(){
+    public void typeCorrectRequest(String request) {
+        searchTextField.sendKeys(request);
+        new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfAllElements(variations));
+    }
+
+    public int getVariationsCount() {
         int count = 0;
-        for(WebElement variation: variations){
-            if(variation.isDisplayed()){
+        for (WebElement variation : variations) {
+            if (variation.isDisplayed()) {
                 count++;
             }
         }
         return count;
     }
 
-    public void clearField(){
+    public void clearField() {
         searchTextField.clear();
     }
 
-    public void doSearch(){
+    public void doSearch() {
         searchButton.click();
     }
 
-    public void toRussian(){
+    public void toRussian() {
         russianButton.click();
     }
 

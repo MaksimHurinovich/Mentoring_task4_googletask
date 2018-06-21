@@ -1,20 +1,18 @@
-package by.gurinovich.googletask.page_objects;
+package by.gurinovich.googletask.pageobjects;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 public abstract class AbstractPage {
 
-    protected WebDriver driver;
+    WebDriver driver;
 
-    public AbstractPage(WebDriver driver)
-    {
+    AbstractPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
     }
 
-    public WebDriver getDriver()
-    {
+    public WebDriver getDriver() {
         return this.driver;
     }
 }

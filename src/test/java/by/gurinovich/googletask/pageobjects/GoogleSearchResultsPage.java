@@ -1,4 +1,4 @@
-package by.gurinovich.googletask.page_objects;
+package by.gurinovich.googletask.pageobjects;
 
 import org.openqa.selenium.WebDriver;
 

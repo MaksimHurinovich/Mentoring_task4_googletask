@@ -1,9 +1,6 @@
 package by.gurinovich.googletask.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,18 +8,50 @@ import java.util.ArrayList;
 
 public class JsonConverter {
 
-    public static ArrayList<String> convertJsonSearcher(String searcher) throws FileNotFoundException {
-        ArrayList<String> requests = new ArrayList<>();
-        JsonArray array = new JsonParser()
+    private static JsonArray readJson() throws FileNotFoundException {
+        return new JsonParser()
                 .parse(new FileReader("src/test/resources/requests.json"))
                 .getAsJsonArray();
-        for(Object o: array){
+    }
+
+
+    public static ArrayList<String> getRequests(String searcher) {
+        ArrayList<String> requests = new ArrayList<>();
+        JsonArray array = null;
+        try {
+            array = readJson();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        for (Object o : array) {
             JsonObject object = (JsonObject) o;
             String searcherUpperCase = searcher.toUpperCase();
             String jsonSearcher = object.get("searcher").getAsString();
-            if(searcherUpperCase.equals(jsonSearcher)){
+            if (searcherUpperCase.equals(jsonSearcher)) {
                 JsonArray temp = object.getAsJsonArray("requests");
-                for(JsonElement r: temp){
+                for (JsonElement r : temp) {
+                    requests.add(r.getAsString());
+                }
+            }
+        }
+        return requests;
+    }
+
+    public static ArrayList<String> getWrongRequests(String searcher){
+        ArrayList<String> requests = new ArrayList<>();
+        JsonArray array = null;
+        try {
+            array = readJson();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        for (Object o : array) {
+            JsonObject object = (JsonObject) o;
+            String searcherUpperCase = searcher.toUpperCase();
+            String jsonSearcher = object.get("searcher").getAsString();
+            if (searcherUpperCase.equals(jsonSearcher)) {
+                JsonArray temp = object.getAsJsonArray("wrongRequests");
+                for (JsonElement r : temp) {
                     requests.add(r.getAsString());
                 }
             }
