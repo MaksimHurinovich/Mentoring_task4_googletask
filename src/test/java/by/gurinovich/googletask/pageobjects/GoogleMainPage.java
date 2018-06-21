@@ -1,5 +1,6 @@
 package by.gurinovich.googletask.pageobjects;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -55,6 +56,10 @@ public class GoogleMainPage extends AbstractPage {
         new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfAllElements(variations));
     }
 
+    public void typeRequest(String request) {
+        searchTextField.sendKeys(request);
+    }
+
     public int getVariationsCount() {
         int count = 0;
         for (WebElement variation : variations) {
@@ -70,11 +75,13 @@ public class GoogleMainPage extends AbstractPage {
     }
 
     public void doSearch() {
-        searchButton.click();
+        searchTextField.sendKeys(Keys.ENTER);
     }
 
     public void toRussian() {
         russianButton.click();
     }
+
+
 
 }

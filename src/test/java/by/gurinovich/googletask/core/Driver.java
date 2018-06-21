@@ -8,6 +8,6 @@ public class Driver {
 
     public static WebDriver createDriver(){
         System.setProperty("webdriver.chrome.driver",  "src/test/resources/chromedriver");
-        return new ChromeDriver(new ChromeOptions().addArguments("startMaximized"));
+        return new ChromeDriver(new ChromeOptions().addArguments("start-maximized"));
     }
 }
