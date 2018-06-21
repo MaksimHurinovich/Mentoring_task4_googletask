@@ -10,14 +10,6 @@ import java.util.ArrayList;
 public class TestRun {
 
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<String> requests = JsonConverter.getRequests("google");
-        System.out.println(requests.toString());
-        GoogleMainPage page = new GoogleMainPage(Driver.createDriver());
-        page.toRussian();
-        for (String request : requests) {
-            page.typeWrongRequest(request);
-            System.out.println(page.getVariationsCount());
-            page.clearField();
-        }
+
     }
 }

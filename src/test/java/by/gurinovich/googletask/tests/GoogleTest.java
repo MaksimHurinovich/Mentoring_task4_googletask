@@ -35,15 +35,12 @@ public class GoogleTest {
         mainPage.getDriver().quit();
     }
 
-    @Test
-    public void autocompleteAppearanceTest() {
-        ArrayList<String> requests = JsonConverter.getRequests("google");
-        for (String request : requests) {
-            mainPage.typeCorrectRequest(request);
-            softAssert.assertNotEquals(mainPage.getVariationsCount(), 0, "ERROR: autocomplete on request '" + request + "' is wrong");
-            mainPage.clearField();
-        }
-        softAssert.assertAll();
+    @Test(dataProvider = "googleDP")
+    public void autocompleteAppearanceTest(String request) {
+        mainPage.typeCorrectRequest(request);
+        int variations = mainPage.getVariationsCount();
+        mainPage.clearField();
+        Assert.assertNotEquals(variations, 0, "ERROR: autocomplete on request '" + request + "' is wrong");
     }
 
     @Test
@@ -76,21 +73,13 @@ public class GoogleTest {
     }
 
     @DataProvider(name = "googleDP")
-    public Object[][] googleDataProvider() {
-        return new Object[][]{
-                {
-                        "xxxtentacion"
-                },
-                {
-                        "mysql vs mongodb"
-                },
-                {
-                        "earth is flat"
-                }
-        };
+    public Object[] googleDataProvider() {
+        ArrayList<String> requests = JsonConverter.getRequests("google");
+        return requests.toArray();
     }
 
-    private List<String> textToWords(String text){
+    private List<String> textToWords(String text) {
         return Arrays.asList(text.toUpperCase().replaceAll("[{}\\[\\](),.\"!?<>:;]", "").split(" "));
     }
 }
+
