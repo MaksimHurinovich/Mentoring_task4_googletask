@@ -5,6 +5,10 @@ import by.gurinovich.googletask.pageobject.yandex.YandexMainPage;
 import by.gurinovich.googletask.pageobject.yandex.YandexSearchResultsPage;
 import by.gurinovich.googletask.util.JsonConverter;
 import by.gurinovich.googletask.util.TextUtil;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -12,6 +16,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +61,22 @@ public class YandexTest {
         int resultsSize = resultsPage.searchResultsSize();
         mainPage.navigateToMain();
         Assert.assertEquals(resultsSize, 0, "ERROR: in bad request " + request);
+    }
+
+    @Test(dataProvider = "yandexDP")
+    public void checkStatusCodesTest(String request) throws IOException {
+        SoftAssert softAssert = new SoftAssert();
+        mainPage.doSearch(request);
+        CloseableHttpClient client = HttpClients.createSystem();
+        for (int i = 0; i < resultsPage.searchResultsSize(); i++) {
+            String url = resultsPage.getResult(i).getAttribute("href");
+            HttpGet httpGet = new HttpGet(url);
+            CloseableHttpResponse response = client.execute(httpGet);
+            int statusCode = response.getStatusLine().getStatusCode();
+            softAssert.assertEquals(statusCode, 200, "ERROR: in link#" + i + " status code is " + statusCode);
+            mainPage.navigateToMain();
+        }
+        softAssert.assertAll();
     }
 
     @DataProvider(name = "yandexDP")
