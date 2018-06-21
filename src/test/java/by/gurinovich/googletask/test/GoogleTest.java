@@ -82,7 +82,7 @@ public class GoogleTest {
         mainPage.typeRequest(request);
         mainPage.doSearch();
         CloseableHttpClient client = HttpClients.createSystem();
-        for(int i = 0; i < resultsPage.resultListSize(); i++){
+        for (int i = 0; i < resultsPage.resultListSize(); i++) {
             String url = resultsPage.getLink(i).getAttribute("href");
             HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse response = client.execute(httpGet);
@@ -90,8 +90,24 @@ public class GoogleTest {
             softAssert.assertEquals(statusCode, 200, "ERROR: in link#" + i + " status code is " + statusCode);
             resultsPage.navigateBack();
         }
+        softAssert.assertAll();
     }
 
+    @Test(dataProvider = "googleDP")
+    public void checkResponseContentTest(String request) throws IOException {
+        mainPage.typeRequest(request);
+        mainPage.doSearch();
+        CloseableHttpClient client = HttpClients.createSystem();
+        for (int i = 0; i < resultsPage.resultListSize(); i++) {
+            String url = resultsPage.getLink(i).getAttribute("href");
+            HttpGet httpGet = new HttpGet(url);
+            CloseableHttpResponse response = client.execute(httpGet);
+            long contentLength = response.getEntity().getContentLength();
+            softAssert.assertNotEquals(contentLength, 0, "ERROR: link#" + i + " has no content");
+            resultsPage.navigateBack();
+        }
+        softAssert.assertAll();
+    }
     @DataProvider(name = "googleDP")
     public Object[] googleDataProvider() {
         ArrayList<String> requests = JsonConverter.getRequests("google");

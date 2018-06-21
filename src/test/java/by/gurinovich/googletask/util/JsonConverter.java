@@ -37,7 +37,7 @@ public class JsonConverter {
         return requests;
     }
 
-    public static ArrayList<String> getWrongRequests(String searcher){
+    public static ArrayList<String> getWrongRequests(String searcher) {
         ArrayList<String> requests = new ArrayList<>();
         JsonArray array = null;
         try {

@@ -24,19 +24,19 @@ public class GoogleSearchResultsPage extends AbstractPage {
         driver.get(GOOGLE_URL);
     }
 
-    public String getRequest(){
+    public String getRequest() {
         return inputField.getText();
     }
 
-    public String getLinkText(WebElement link){
+    public String getLinkText(WebElement link) {
         return link.getText();
     }
 
-    public WebElement getLink(int i){
+    public WebElement getLink(int i) {
         return resultList.get(i);
     }
 
-    public int resultListSize(){
+    public int resultListSize() {
         return resultList.size();
     }
 }

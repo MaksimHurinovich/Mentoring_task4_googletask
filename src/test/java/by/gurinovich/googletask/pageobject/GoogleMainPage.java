@@ -67,5 +67,4 @@ public class GoogleMainPage extends AbstractPage {
     }
 
 
-
 }
