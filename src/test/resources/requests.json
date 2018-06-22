@@ -2,9 +2,9 @@
   {
     "searcher": "GOOGLE",
     "requests": [
-      "chair 399",
-      "my name is jeff",
-      "how to grow"
+      "bonus meme",
+      "epam systems",
+      "paypal"
     ],
     "wrongRequests": [
       "asdsfgnmsgahhrhrehn",
@@ -28,7 +28,7 @@
   {
     "searcher": "BING",
     "requests": [
-      "how bing is still",
+      "viacom",
       "gloria borger pewdiepie",
       "family guy"
     ],

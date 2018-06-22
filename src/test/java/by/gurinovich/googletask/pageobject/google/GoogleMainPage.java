@@ -32,13 +32,9 @@ public class GoogleMainPage extends AbstractPage {
     }
 
     public void typeWrongRequest(String request) {
+        searchTextField.clear();
         searchTextField.sendKeys(request);
         new WebDriverWait(driver, 2).until(ExpectedConditions.invisibilityOfAllElements(variations));
-    }
-
-    public void typeCorrectRequest(String request) {
-        searchTextField.sendKeys(request);
-        new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfAllElements(variations));
     }
 
     public int getVariationsCount() {
@@ -56,6 +52,7 @@ public class GoogleMainPage extends AbstractPage {
     }
 
     public void doSearch(String request) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(searchTextField));
         searchTextField.sendKeys(request);
         searchTextField.sendKeys(Keys.ENTER);
     }

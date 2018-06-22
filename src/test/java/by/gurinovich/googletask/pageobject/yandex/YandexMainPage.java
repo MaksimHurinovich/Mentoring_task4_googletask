@@ -4,6 +4,8 @@ import by.gurinovich.googletask.pageobject.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class YandexMainPage extends AbstractPage {
 
@@ -22,6 +24,8 @@ public class YandexMainPage extends AbstractPage {
     }
 
     public void doSearch(String request) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(searchTextField));
+        searchTextField.clear();
         searchTextField.sendKeys(request);
         searchBtn.click();
     }

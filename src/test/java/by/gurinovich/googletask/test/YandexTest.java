@@ -3,14 +3,13 @@ package by.gurinovich.googletask.test;
 import by.gurinovich.googletask.core.Driver;
 import by.gurinovich.googletask.pageobject.yandex.YandexMainPage;
 import by.gurinovich.googletask.pageobject.yandex.YandexSearchResultsPage;
-import by.gurinovich.googletask.util.JsonConverter;
+import by.gurinovich.googletask.util.JsonRequestsManager;
 import by.gurinovich.googletask.util.TextUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -32,13 +31,9 @@ public class YandexTest {
         resultsPage = new YandexSearchResultsPage(mainPage.getDriver());
     }
 
-    @AfterClass
-    public void destroy() {
-        mainPage.getDriver().quit();
-    }
-
     @Test
     public void yandexTitleCheck() {
+        mainPage.navigateToMain();
         Assert.assertEquals(mainPage.getDriver().getTitle(), "Яндекс", "ERROR: title is not correct.");
     }
 
@@ -47,7 +42,7 @@ public class YandexTest {
         SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
-        for (int i = 0; i < resultsPage.searchResultsSize(); i++) {
+        for (int i = 0; i < 5; i++) {
             List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getResult(i)));
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i + ": " + wordsInRequest + " " + linkTextWords);
         }
@@ -67,27 +62,28 @@ public class YandexTest {
     public void checkStatusCodesTest(String request) throws IOException {
         SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
-        CloseableHttpClient client = HttpClients.createSystem();
-        for (int i = 0; i < resultsPage.searchResultsSize(); i++) {
+        CloseableHttpClient client = HttpClients.createDefault();
+        for (int i = 0; i < 3; i++) {
             String url = resultsPage.getResult(i).getAttribute("href");
             HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse response = client.execute(httpGet);
             int statusCode = response.getStatusLine().getStatusCode();
             softAssert.assertEquals(statusCode, 200, "ERROR: in link#" + i + " status code is " + statusCode);
-            mainPage.navigateToMain();
+            response.close();
         }
+        mainPage.navigateToMain();
         softAssert.assertAll();
     }
 
     @DataProvider(name = "yandexDP")
     public Object[] yandexDataProvider() {
-        ArrayList<String> requests = JsonConverter.getRequests("yandex");
+        ArrayList<String> requests = JsonRequestsManager.getRequests("yandex");
         return requests.toArray();
     }
 
     @DataProvider(name = "wrongDP")
     public Object[] yandexWrongRequestsProvider() {
-        ArrayList<String> wrongRequests = JsonConverter.getWrongRequests("yandex");
+        ArrayList<String> wrongRequests = JsonRequestsManager.getWrongRequests("yandex");
         return wrongRequests.toArray();
     }
 }

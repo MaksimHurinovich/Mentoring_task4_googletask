@@ -6,23 +6,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class JsonConverter {
+public class JsonRequestsManager {
 
-    private static JsonArray readJson() throws FileNotFoundException {
-        return new JsonParser()
-                .parse(new FileReader("src/test/resources/requests.json"))
-                .getAsJsonArray();
+    private static JsonArray readJson() {
+        try {
+            return new JsonParser()
+                    .parse(new FileReader("src/test/resources/requests.json"))
+                    .getAsJsonArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new JsonArray();
+        }
     }
 
 
     public static ArrayList<String> getRequests(String searcher) {
         ArrayList<String> requests = new ArrayList<>();
-        JsonArray array = null;
-        try {
-            array = readJson();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        JsonArray array = readJson();
         for (Object o : array) {
             JsonObject object = (JsonObject) o;
             String searcherUpperCase = searcher.toUpperCase();
@@ -32,6 +32,7 @@ public class JsonConverter {
                 for (JsonElement r : temp) {
                     requests.add(r.getAsString());
                 }
+                break;
             }
         }
         return requests;
@@ -39,12 +40,7 @@ public class JsonConverter {
 
     public static ArrayList<String> getWrongRequests(String searcher) {
         ArrayList<String> requests = new ArrayList<>();
-        JsonArray array = null;
-        try {
-            array = readJson();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        JsonArray array = readJson();
         for (Object o : array) {
             JsonObject object = (JsonObject) o;
             String searcherUpperCase = searcher.toUpperCase();
@@ -54,6 +50,7 @@ public class JsonConverter {
                 for (JsonElement r : temp) {
                     requests.add(r.getAsString());
                 }
+                break;
             }
         }
         return requests;
