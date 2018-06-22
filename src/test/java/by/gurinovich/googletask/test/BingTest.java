@@ -22,7 +22,7 @@ public class BingTest {
 
     @BeforeClass
     public void init() {
-        mainPage = new BingMainPage(Driver.createDriver());
+        mainPage = new BingMainPage(Driver.getDriver());
         resultsPage = new BingSearchResultsPage(mainPage.getDriver());
     }
 
@@ -42,7 +42,6 @@ public class BingTest {
         }
         mainPage.navigateToMain();
         softAssert.assertAll();
-        mainPage.navigateToMain();
     }
 
     @DataProvider(name = "bingDP")

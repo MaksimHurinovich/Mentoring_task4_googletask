@@ -28,7 +28,7 @@ public class YandexTest {
 
     @BeforeClass
     public void init() {
-        mainPage = new YandexMainPage(Driver.createDriver());
+        mainPage = new YandexMainPage(Driver.getDriver());
         resultsPage = new YandexSearchResultsPage(mainPage.getDriver());
     }
 

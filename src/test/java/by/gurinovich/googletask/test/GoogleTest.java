@@ -29,7 +29,7 @@ public class GoogleTest {
 
     @BeforeClass
     public void init() {
-        mainPage = new GoogleMainPage(Driver.createDriver());
+        mainPage = new GoogleMainPage(Driver.getDriver());
         resultsPage = new GoogleSearchResultsPage(mainPage.getDriver());
         mainPage.toRussian();
         softAssert = new SoftAssert();

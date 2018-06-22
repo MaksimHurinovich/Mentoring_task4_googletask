@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Main Page" thread-count="3" parallel="methods" >
+<suite name="Main Suite">
+    <listeners>
+        <listener class-name="by.gurinovich.googletask.listener.TestListener"/>
+    </listeners>
     <test name="GoogleTest">
         <classes>
             <class name="by.gurinovich.googletask.test.GoogleTest"/>
+        </classes>
+    </test>
+    <test name="YandexTest">
+        <classes>
             <class name="by.gurinovich.googletask.test.YandexTest"/>
+        </classes>
+    </test>
+    <test name="BingTest">
+        <classes>
             <class name="by.gurinovich.googletask.test.BingTest"/>
         </classes>
     </test>
-
 </suite>
