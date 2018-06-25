@@ -2,13 +2,17 @@ package by.gurinovich.googletask.pageobject.google;
 
 import by.gurinovich.googletask.pageobject.AbstractPage;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class GoogleMainPage extends AbstractPage {
 
@@ -34,7 +38,21 @@ public class GoogleMainPage extends AbstractPage {
     public void typeWrongRequest(String request) {
         searchTextField.clear();
         searchTextField.sendKeys(request);
-        new WebDriverWait(driver, 2).until(ExpectedConditions.invisibilityOfAllElements(variations));
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(2, SECONDS)
+                .pollingEvery(300, MILLISECONDS)
+                .ignoring(NoSuchElementException.class);
+        wait.until((ExpectedCondition<Boolean>) webDriver -> {
+            boolean flag = false;
+            try {
+                for (WebElement variation : variations) {
+                    flag = variation.isDisplayed();
+                }
+            } catch (StaleElementReferenceException e) {
+                flag = false;
+            }
+            return !flag;
+        });
     }
 
     public int getVariationsCount() {
@@ -52,7 +70,11 @@ public class GoogleMainPage extends AbstractPage {
     }
 
     public void doSearch(String request) {
-        new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(searchTextField));
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(3, SECONDS)
+                .pollingEvery(300, MILLISECONDS)
+                .ignoring(StaleElementReferenceException.class);
+        wait.until((ExpectedCondition<Boolean>) webDriver -> searchTextField.isEnabled());
         searchTextField.sendKeys(request);
         searchTextField.sendKeys(Keys.ENTER);
     }

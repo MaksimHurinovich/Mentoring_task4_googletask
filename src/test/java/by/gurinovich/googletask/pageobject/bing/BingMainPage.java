@@ -4,9 +4,14 @@ import by.gurinovich.googletask.pageobject.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
+import java.util.NoSuchElementException;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 public class BingMainPage extends AbstractPage {
@@ -26,7 +31,11 @@ public class BingMainPage extends AbstractPage {
     }
 
     public void doSearch(String request) {
-        new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(searchField));
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(3, SECONDS)
+                .pollingEvery(300, MILLISECONDS)
+                .ignoring(NoSuchElementException.class);
+        wait.until((ExpectedCondition<Boolean>) webDriver -> searchField.isDisplayed());
         searchField.clear();
         searchField.sendKeys(request);
         searchBtn.click();
