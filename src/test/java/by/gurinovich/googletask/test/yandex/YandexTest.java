@@ -1,14 +1,11 @@
 package by.gurinovich.googletask.test.yandex;
 
+import by.gurinovich.googletask.core.httpclient.HttpClientManager;
 import by.gurinovich.googletask.pageobject.yandex.YandexMainPage;
 import by.gurinovich.googletask.pageobject.yandex.YandexSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
 import by.gurinovich.googletask.util.TextUtil;
 import com.google.inject.Inject;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Guice;
@@ -40,7 +37,7 @@ public class YandexTest {
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
         for (int i = 0; i < 5; i++) {
-            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getResult(i)));
+            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getLink(i)));
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i + ": " + wordsInRequest + " " + linkTextWords);
         }
         mainPage.navigateToMain();
@@ -57,19 +54,10 @@ public class YandexTest {
 
     @Test(dataProvider = "yandexDP")
     public void checkStatusCodesTest(String request) throws IOException {
-        SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
-        CloseableHttpClient client = HttpClients.createDefault();
-        for (int i = 0; i < 3; i++) {
-            String url = resultsPage.getResult(i).getAttribute("href");
-            HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response = client.execute(httpGet);
-            int statusCode = response.getStatusLine().getStatusCode();
-            softAssert.assertEquals(statusCode, 200, "ERROR: in link#" + i + " status code is " + statusCode);
-            response.close();
-        }
+        boolean okStatusCodeCheck = HttpClientManager.checkOKStatusCode(resultsPage);
         mainPage.navigateToMain();
-        softAssert.assertAll();
+        Assert.assertTrue(okStatusCodeCheck, "Status code is not 200.");
     }
 
     @DataProvider(name = "yandexDP")

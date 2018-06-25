@@ -1,15 +1,11 @@
 package by.gurinovich.googletask.test.google;
 
-import by.gurinovich.googletask.core.Driver;
+import by.gurinovich.googletask.core.httpclient.HttpClientManager;
 import by.gurinovich.googletask.pageobject.google.GoogleMainPage;
 import by.gurinovich.googletask.pageobject.google.GoogleSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
 import by.gurinovich.googletask.util.TextUtil;
 import com.google.inject.Inject;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -17,7 +13,6 @@ import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,37 +57,19 @@ public class GoogleTest {
     }
 
     @Test(dataProvider = "googleDP")
-    public void checkStatusCodeTest(String request) throws IOException {
-        SoftAssert softAssert = new SoftAssert();
+    public void checkStatusCodeTest(String request) {
         mainPage.doSearch(request);
-        CloseableHttpClient client = HttpClients.createDefault();
-        for (int i = 0; i < 3; i++) {
-            String url = resultsPage.getLink(i).getAttribute("href");
-            HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response = client.execute(httpGet);
-            int statusCode = response.getStatusLine().getStatusCode();
-            softAssert.assertEquals(statusCode, 200, "ERROR: in link#" + i + " status code is " + statusCode);
-            response.close();
-        }
+        boolean okStatusCheck = HttpClientManager.checkOKStatusCode(resultsPage);
         resultsPage.navigateBack();
-        softAssert.assertAll();
+        Assert.assertTrue(okStatusCheck, "Status code is not 200.");
     }
 
     @Test(dataProvider = "googleDP")
-    public void checkResponseContentTest(String request) throws IOException {
-        SoftAssert softAssert = new SoftAssert();
+    public void checkResponseContentTest(String request) {
         mainPage.doSearch(request);
-        CloseableHttpClient client = HttpClients.createDefault();
-        for (int i = 0; i < 3; i++) {
-            String url = resultsPage.getLink(i).getAttribute("href");
-            HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response = client.execute(httpGet);
-            long contentLength = response.getEntity().getContentLength();
-            softAssert.assertNotEquals(contentLength, 0, "ERROR: link#" + i + " has no content");
-            response.close();
-        }
+        boolean checkResponseContent = HttpClientManager.checkResponseContentNotEmpty(resultsPage);
         resultsPage.navigateBack();
-        softAssert.assertAll();
+        Assert.assertTrue(checkResponseContent, "Links contain empty content.");
     }
 
     @DataProvider(name = "googleDP")

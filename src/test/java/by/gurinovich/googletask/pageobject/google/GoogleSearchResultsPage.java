@@ -1,13 +1,14 @@
 package by.gurinovich.googletask.pageobject.google;
 
 import by.gurinovich.googletask.pageobject.AbstractPage;
+import by.gurinovich.googletask.pageobject.ResultPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class GoogleSearchResultsPage extends AbstractPage {
+public class GoogleSearchResultsPage extends AbstractPage implements ResultPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 
@@ -22,10 +23,17 @@ public class GoogleSearchResultsPage extends AbstractPage {
         driver.get(GOOGLE_URL);
     }
 
+    @Override
     public String getLinkText(WebElement link) {
         return link.getText();
     }
 
+    @Override
+    public int searchResultsSize() {
+        return resultList.size();
+    }
+
+    @Override
     public WebElement getLink(int i) {
         return resultList.get(i);
     }
