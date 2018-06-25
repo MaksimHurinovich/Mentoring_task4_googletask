@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Main Suite" parallel="tests" thread-count="3">
+<suite name="Main Suite" thread-count="3" parallel="tests">
     <listeners>
         <listener class-name="by.gurinovich.googletask.core.listener.TestListener"/>
     </listeners>

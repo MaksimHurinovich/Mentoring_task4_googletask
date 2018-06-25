@@ -7,20 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestRunner {
+
     public static void main(String[] args) {
+        RunnerManager.parseCommandLineForTestStart(args);
         TestNG tng = new TestNG();
 
         XmlSuite xmlSuite = new XmlSuite();
 
         List<String> xmlFiles = new ArrayList<>();
 
-        xmlFiles.add("./src/test/resources/test_suite.xml");
+        xmlFiles.add("./src/test/resources/" + RunnerManager.getSuitName());
 
         xmlSuite.setSuiteFiles(xmlFiles);
 
         List<XmlSuite> xmlSuites = new ArrayList<>();
         xmlSuites.add(xmlSuite);
-
+        XmlSuite.ParallelMode mode = XmlSuite.ParallelMode.getValidParallel(RunnerManager.getParallelMode());
+        tng.setParallel(mode);
+        tng.setThreadCount(RunnerManager.getThreadCount());
         tng.setXmlSuites(xmlSuites);
 
         tng.run();

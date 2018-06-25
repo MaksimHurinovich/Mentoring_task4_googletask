@@ -14,19 +14,12 @@ public class GoogleSearchResultsPage extends AbstractPage {
     @FindBy(xpath = "//div[@class='rc']/h3/a")
     private List<WebElement> resultList;
 
-    @FindBy(xpath = "//input[@id='lst-ib']")
-    private WebElement inputField;
-
     public GoogleSearchResultsPage(WebDriver driver) {
         super(driver);
     }
 
     public void navigateBack() {
         driver.get(GOOGLE_URL);
-    }
-
-    public String getRequest() {
-        return inputField.getText();
     }
 
     public String getLinkText(WebElement link) {
@@ -37,7 +30,4 @@ public class GoogleSearchResultsPage extends AbstractPage {
         return resultList.get(i);
     }
 
-    public int resultListSize() {
-        return resultList.size();
-    }
 }
