@@ -7,17 +7,17 @@
     </listeners>
     <test name="GoogleTest">
         <classes>
-            <class name="by.gurinovich.googletask.test.GoogleTest"/>
+            <class name="by.gurinovich.googletask.test.google.GoogleTest"/>
         </classes>
     </test>
     <test name="YandexTest">
         <classes>
-            <class name="by.gurinovich.googletask.test.YandexTest"/>
+            <class name="by.gurinovich.googletask.test.yandex.YandexTest"/>
         </classes>
     </test>
     <test name="BingTest">
         <classes>
-            <class name="by.gurinovich.googletask.test.BingTest"/>
+            <class name="by.gurinovich.googletask.test.bing.BingTest"/>
         </classes>
     </test>
 </suite>

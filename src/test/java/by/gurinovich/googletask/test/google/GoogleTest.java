@@ -1,10 +1,11 @@
-package by.gurinovich.googletask.test;
+package by.gurinovich.googletask.test.google;
 
 import by.gurinovich.googletask.core.Driver;
 import by.gurinovich.googletask.pageobject.google.GoogleMainPage;
 import by.gurinovich.googletask.pageobject.google.GoogleSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
 import by.gurinovich.googletask.util.TextUtil;
+import com.google.inject.Inject;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -20,15 +22,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+@Guice(modules = GoogleGuiceModule.class)
 public class GoogleTest {
 
+    @Inject
     private GoogleMainPage mainPage;
+    @Inject
     private GoogleSearchResultsPage resultsPage;
 
     @BeforeClass
     public void init() {
-        mainPage = new GoogleMainPage(Driver.getDriverInstance());
-        resultsPage = new GoogleSearchResultsPage(mainPage.getDriver());
         mainPage.toRussian();
     }
 

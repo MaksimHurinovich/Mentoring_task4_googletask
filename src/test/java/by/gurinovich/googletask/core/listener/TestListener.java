@@ -1,21 +1,10 @@
 package by.gurinovich.googletask.core.listener;
 
-import by.gurinovich.googletask.core.Driver;
-import org.openqa.selenium.WebDriver;
-import org.testng.*;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
 
-public class TestListener implements IClassListener, ITestListener {
-
-    @Override
-    public void onBeforeClass(ITestClass iTestClass) {
-        WebDriver webDriver = Driver.getDriverInstance();
-        Driver.createDriver(webDriver);
-    }
-
-    @Override
-    public void onAfterClass(ITestClass iTestClass) {
-        Driver.getDriver().quit();
-    }
+public class TestListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult iTestResult) {

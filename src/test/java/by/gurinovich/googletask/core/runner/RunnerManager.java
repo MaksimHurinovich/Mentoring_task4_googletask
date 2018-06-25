@@ -2,7 +2,7 @@ package by.gurinovich.googletask.core.runner;
 
 import org.apache.commons.cli.*;
 
-public class RunnerManager {
+class RunnerManager {
 
     private static CommandLine cmd;
 
