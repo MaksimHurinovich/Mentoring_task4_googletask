@@ -23,12 +23,10 @@ public class HttpClient {
 
     public HttpResponse post(String url) {
         return execute(new HttpPost(), url);
-
     }
 
     public HttpResponse put(String url) {
         return execute(new HttpPut(), url);
-
     }
 
     public HttpResponse delete(String url) {
