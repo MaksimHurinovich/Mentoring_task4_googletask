@@ -1,7 +1,8 @@
 package by.gurinovich.googletask.test.yandex;
 
 import by.gurinovich.googletask.guice.YandexGuiceModule;
-import by.gurinovich.googletask.httpclient.HttpClientManager;
+import by.gurinovich.googletask.httpclient.HttpClient;
+import by.gurinovich.googletask.httpclient.entity.HttpResponse;
 import by.gurinovich.googletask.pageobject.yandex.YandexMainPage;
 import by.gurinovich.googletask.pageobject.yandex.YandexSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
@@ -13,7 +14,6 @@ import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +38,7 @@ public class YandexTest {
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
         for (int i = 0; i < 5; i++) {
-            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getLink(i)));
+            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(i));
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i + ": " + wordsInRequest + " " + linkTextWords);
         }
         mainPage.navigateToMain();
@@ -54,11 +54,16 @@ public class YandexTest {
     }
 
     @Test(dataProvider = "yandexDP")
-    public void checkStatusCodesTest(String request) throws IOException {
+    public void checkStatusCodesTest(String request) {
+        SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
-        boolean okStatusCodeCheck = HttpClientManager.checkOKStatusCode(resultsPage);
+        HttpClient client = new HttpClient();
+        for(int i = 0; i < resultsPage.searchResultsSize() - 3; i++){
+            HttpResponse response = client.get(resultsPage.getLinkURL(i));
+            softAssert.assertEquals(response.getStatusCode(), 200, "Link#" + i + " has wrong status code,");
+        }
         mainPage.navigateToMain();
-        Assert.assertTrue(okStatusCodeCheck, "Status code is not 200.");
+        softAssert.assertAll();
     }
 
     @DataProvider(name = "yandexDP")

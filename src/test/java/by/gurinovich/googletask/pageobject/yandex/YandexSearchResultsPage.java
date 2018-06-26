@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class YandexSearchResultsPage extends AbstractPage implements ResultPage {
+public class YandexSearchResultsPage extends ResultPage {
 
     @FindBy(xpath = "//li[@class = 'serp-item']//h2/a")
     private List<WebElement> searchResults;
@@ -23,12 +23,12 @@ public class YandexSearchResultsPage extends AbstractPage implements ResultPage 
     }
 
     @Override
-    public WebElement getLink(int i) {
-        return searchResults.get(i);
+    public String getLinkURL(int i) {
+        return searchResults.get(i).getAttribute("href");
     }
 
     @Override
-    public String getLinkText(WebElement result) {
-        return result.getText();
+    public String getLinkText(int link) {
+        return searchResults.get(link).getText();
     }
 }

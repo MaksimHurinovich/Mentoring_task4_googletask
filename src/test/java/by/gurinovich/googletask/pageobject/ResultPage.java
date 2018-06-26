@@ -1,12 +1,17 @@
 package by.gurinovich.googletask.pageobject;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public interface ResultPage {
+public abstract class ResultPage extends AbstractPage {
 
-    int searchResultsSize();
+    public ResultPage(WebDriver driver) {
+        super(driver);
+    }
 
-    WebElement getLink(int i);
+    public abstract int searchResultsSize();
 
-    String getLinkText(WebElement link);
+    public abstract String getLinkURL(int i);
+
+    public abstract String getLinkText(int link);
 }

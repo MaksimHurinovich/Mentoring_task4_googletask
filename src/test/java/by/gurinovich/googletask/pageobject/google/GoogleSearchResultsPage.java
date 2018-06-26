@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class GoogleSearchResultsPage extends AbstractPage implements ResultPage {
+public class GoogleSearchResultsPage extends ResultPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 
@@ -24,8 +24,8 @@ public class GoogleSearchResultsPage extends AbstractPage implements ResultPage 
     }
 
     @Override
-    public String getLinkText(WebElement link) {
-        return link.getText();
+    public String getLinkText(int link) {
+        return resultList.get(link).getText();
     }
 
     @Override
@@ -34,8 +34,8 @@ public class GoogleSearchResultsPage extends AbstractPage implements ResultPage 
     }
 
     @Override
-    public WebElement getLink(int i) {
-        return resultList.get(i);
+    public String getLinkURL(int i) {
+        return resultList.get(i).getAttribute("href");
     }
 
 }

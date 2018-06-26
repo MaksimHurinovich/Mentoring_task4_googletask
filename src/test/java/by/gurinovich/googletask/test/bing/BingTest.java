@@ -1,7 +1,8 @@
 package by.gurinovich.googletask.test.bing;
 
 import by.gurinovich.googletask.guice.BingGuiceModule;
-import by.gurinovich.googletask.httpclient.HttpClientManager;
+import by.gurinovich.googletask.httpclient.HttpClient;
+import by.gurinovich.googletask.httpclient.entity.HttpResponse;
 import by.gurinovich.googletask.pageobject.bing.BingMainPage;
 import by.gurinovich.googletask.pageobject.bing.BingSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
@@ -32,7 +33,7 @@ public class BingTest {
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
         for (int i = 0; i < resultsPage.searchResultsSize() - 1; i++) {
-            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getLink(i)));
+            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(i));
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i + ": " + wordsInRequest + " " + linkTextWords);
         }
         mainPage.navigateToMain();
@@ -49,10 +50,15 @@ public class BingTest {
 
     @Test(dataProvider = "bingDP")
     public void checkStatusCodeTest(String request) {
+        SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
-        boolean okStatusCheck = HttpClientManager.checkOKStatusCode(resultsPage);
+        HttpClient client = new HttpClient();
+        for(int i = 0; i < resultsPage.searchResultsSize() - 3; i++){
+            HttpResponse response = client.get(resultsPage.getLinkURL(i));
+            softAssert.assertEquals(response.getStatusCode(), 200, "Link#" + i + " has wrong status code,");
+        }
         mainPage.navigateToMain();
-        Assert.assertTrue(okStatusCheck, "Status code is not 200.");
+        softAssert.assertAll();
     }
 
     @DataProvider(name = "bingDP")

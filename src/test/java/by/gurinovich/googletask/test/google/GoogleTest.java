@@ -1,7 +1,8 @@
 package by.gurinovich.googletask.test.google;
 
 import by.gurinovich.googletask.guice.GoogleGuiceModule;
-import by.gurinovich.googletask.httpclient.HttpClientManager;
+import by.gurinovich.googletask.httpclient.HttpClient;
+import by.gurinovich.googletask.httpclient.entity.HttpResponse;
 import by.gurinovich.googletask.pageobject.google.GoogleMainPage;
 import by.gurinovich.googletask.pageobject.google.GoogleSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
@@ -50,7 +51,7 @@ public class GoogleTest {
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
         for (int i = 0; i < 5; i++) {
-            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(resultsPage.getLink(i)));
+            List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(i));
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i);
         }
         resultsPage.navigateBack();
@@ -59,18 +60,28 @@ public class GoogleTest {
 
     @Test(dataProvider = "googleDP")
     public void checkStatusCodeTest(String request) {
+        SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
-        boolean okStatusCheck = HttpClientManager.checkOKStatusCode(resultsPage);
+        HttpClient client = new HttpClient();
+        for(int i = 0; i < resultsPage.searchResultsSize() - 3; i++){
+            HttpResponse response = client.get(resultsPage.getLinkURL(i));
+            softAssert.assertEquals(response.getStatusCode(), 200, "Link#" + i + " has wrong status code,");
+        }
         resultsPage.navigateBack();
-        Assert.assertTrue(okStatusCheck, "Status code is not 200.");
+        softAssert.assertAll();
     }
 
     @Test(dataProvider = "googleDP")
     public void checkResponseContentTest(String request) {
+        SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
-        boolean checkResponseContent = HttpClientManager.checkResponseContentNotEmpty(resultsPage);
+        HttpClient client = new HttpClient();
+        for(int i = 0; i < resultsPage.searchResultsSize() - 3; i++){
+            HttpResponse response = client.get(resultsPage.getLinkURL(i));
+            softAssert.assertNotEquals(response.getHeaders().get("content-length"), 0, "Link#" + i + " has no content,");
+        }
         resultsPage.navigateBack();
-        Assert.assertTrue(checkResponseContent, "Links contain empty content.");
+        softAssert.assertAll();
     }
 
     @DataProvider(name = "googleDP")
