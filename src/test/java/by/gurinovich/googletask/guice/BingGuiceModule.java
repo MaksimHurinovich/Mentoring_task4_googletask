@@ -1,4 +1,4 @@
-package by.gurinovich.googletask.test.bing;
+package by.gurinovich.googletask.guice;
 
 import by.gurinovich.googletask.core.Driver;
 import by.gurinovich.googletask.pageobject.bing.BingMainPage;

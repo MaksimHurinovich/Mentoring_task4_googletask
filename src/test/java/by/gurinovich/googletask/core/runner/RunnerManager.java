@@ -4,9 +4,9 @@ import org.apache.commons.cli.*;
 
 class RunnerManager {
 
-    private static CommandLine cmd;
+    private CommandLine cmd;
 
-    static void parseCommandLineForTestStart(String[] args) {
+    void parseCommandLineForTestStart(String[] args) {
         Options options = new Options();
         options.addOption("pm", "parallel-mode", true, "Parallel mode");
         options.addOption("th", "thread-count", true, "Thread count");
@@ -19,15 +19,15 @@ class RunnerManager {
         }
     }
 
-    static String getParallelMode() {
+    String getParallelMode() {
         return cmd.getOptionValue("pm");
     }
 
-    static int getThreadCount() {
+    int getThreadCount() {
         return Integer.parseInt(cmd.getOptionValue("th"));
     }
 
-    static String getSuitName() {
+    String getSuitName() {
         return cmd.getOptionValue("xml");
     }
 }

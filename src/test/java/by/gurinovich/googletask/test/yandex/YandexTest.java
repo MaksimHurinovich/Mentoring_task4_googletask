@@ -1,6 +1,7 @@
 package by.gurinovich.googletask.test.yandex;
 
-import by.gurinovich.googletask.core.httpclient.HttpClientManager;
+import by.gurinovich.googletask.guice.YandexGuiceModule;
+import by.gurinovich.googletask.httpclient.HttpClientManager;
 import by.gurinovich.googletask.pageobject.yandex.YandexMainPage;
 import by.gurinovich.googletask.pageobject.yandex.YandexSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;

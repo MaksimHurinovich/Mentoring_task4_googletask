@@ -1,6 +1,7 @@
 package by.gurinovich.googletask.test.google;
 
-import by.gurinovich.googletask.core.httpclient.HttpClientManager;
+import by.gurinovich.googletask.guice.GoogleGuiceModule;
+import by.gurinovich.googletask.httpclient.HttpClientManager;
 import by.gurinovich.googletask.pageobject.google.GoogleMainPage;
 import by.gurinovich.googletask.pageobject.google.GoogleSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;

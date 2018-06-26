@@ -1,4 +1,4 @@
-package by.gurinovich.googletask.core.httpclient;
+package by.gurinovich.googletask.httpclient;
 
 import by.gurinovich.googletask.pageobject.ResultPage;
 import org.apache.http.client.methods.CloseableHttpResponse;

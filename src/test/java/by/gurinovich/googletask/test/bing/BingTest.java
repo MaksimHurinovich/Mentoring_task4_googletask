@@ -1,6 +1,7 @@
 package by.gurinovich.googletask.test.bing;
 
-import by.gurinovich.googletask.core.httpclient.HttpClientManager;
+import by.gurinovich.googletask.guice.BingGuiceModule;
+import by.gurinovich.googletask.httpclient.HttpClientManager;
 import by.gurinovich.googletask.pageobject.bing.BingMainPage;
 import by.gurinovich.googletask.pageobject.bing.BingSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
