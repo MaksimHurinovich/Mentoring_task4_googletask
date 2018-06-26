@@ -4,26 +4,43 @@ import by.gurinovich.googletask.httpclient.entity.HttpResponse;
 import javafx.util.Pair;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 
 public class HttpClient {
 
     private CloseableHttpClient client = HttpClients.createDefault();
 
-    public HttpResponse get(String url)  {
-        HttpGet httpGet = new HttpGet(url);
+    public HttpResponse get(String url) {
+        return execute(new HttpGet(url), url);
+    }
+
+    public HttpResponse post(String url) {
+        return execute(new HttpPost(), url);
+
+    }
+
+    public HttpResponse put(String url) {
+        return execute(new HttpPut(), url);
+
+    }
+
+    public HttpResponse delete(String url) {
+        return execute(new HttpDelete(), url);
+    }
+
+    private HttpResponse execute(HttpRequestBase base, String url) {
+        base.setURI(URI.create(url));
         HttpResponse response = new HttpResponse();
         try {
-            CloseableHttpResponse apacheResponse = client.execute(httpGet);
+            CloseableHttpResponse apacheResponse = client.execute(base);
             response = getResponseInfo(apacheResponse);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,10 +57,10 @@ public class HttpClient {
         String content = EntityUtils.toString(contentEntity);
         Integer contentLength = content.length();
         response.setHeaders(new HashMap<>() {{
-            for(Header header:headers){
+            for (Header header : headers) {
                 put(header.getName(), header.getValue());
             }
-            put("content-length", contentLength);
+            put("content-length", Integer.toString(contentLength));
         }});
         response.setResponseContent(content);
         return response;

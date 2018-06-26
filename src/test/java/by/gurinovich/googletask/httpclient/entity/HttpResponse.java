@@ -16,14 +16,14 @@ public class HttpResponse {
     }
 
     private Pair<Integer, String> statusLine;
-    private Map<String, Object> headers = new HashMap<>();
+    private Map<String, String> headers = new HashMap<>();
     private String responseContent;
 
-    public Map<String, Object> getHeaders() {
+    public Map<String, String> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Map<String, Object> headers) {
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 
@@ -35,7 +35,7 @@ public class HttpResponse {
         this.responseContent = responseContent;
     }
 
-    public void addHeader(String name, Object value){
+    public void addHeader(String name, String value){
         headers.put(name, value);
     }
 
