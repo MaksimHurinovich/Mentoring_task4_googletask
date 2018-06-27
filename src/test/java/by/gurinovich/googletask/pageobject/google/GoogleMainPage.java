@@ -1,6 +1,7 @@
 package by.gurinovich.googletask.pageobject.google;
 
 import by.gurinovich.googletask.pageobject.AbstractPage;
+import by.gurinovich.googletask.pageobject.MainPage;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -14,7 +15,7 @@ import java.util.NoSuchElementException;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class GoogleMainPage extends AbstractPage {
+public class GoogleMainPage extends MainPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 
@@ -42,7 +43,7 @@ public class GoogleMainPage extends AbstractPage {
                 .withTimeout(2, SECONDS)
                 .pollingEvery(300, MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
-        wait.until((ExpectedCondition<Boolean>) webDriver -> {
+        wait.until(webDriver -> {
             boolean flag = false;
             try {
                 for (WebElement variation : variations) {
@@ -69,14 +70,20 @@ public class GoogleMainPage extends AbstractPage {
         searchTextField.clear();
     }
 
+    @Override
     public void doSearch(String request) {
         Wait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(3, SECONDS)
                 .pollingEvery(300, MILLISECONDS)
                 .ignoring(StaleElementReferenceException.class);
-        wait.until((ExpectedCondition<Boolean>) webDriver -> searchTextField.isEnabled());
+        wait.until(webDriver -> searchTextField.isEnabled());
         searchTextField.sendKeys(request);
         searchTextField.sendKeys(Keys.ENTER);
+    }
+
+    @Override
+    public void navigateToMain() {
+        driver.get(GOOGLE_URL);
     }
 
     public void toRussian() {

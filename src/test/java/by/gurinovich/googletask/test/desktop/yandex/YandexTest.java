@@ -1,4 +1,4 @@
-package by.gurinovich.googletask.test.yandex;
+package by.gurinovich.googletask.test.desktop.yandex;
 
 import by.gurinovich.googletask.guice.YandexGuiceModule;
 import by.gurinovich.googletask.httpclient.HttpClient;

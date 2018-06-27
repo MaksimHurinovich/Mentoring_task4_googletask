@@ -1,4 +1,4 @@
-package by.gurinovich.googletask.test.bing;
+package by.gurinovich.googletask.test.desktop.bing;
 
 import by.gurinovich.googletask.guice.BingGuiceModule;
 import by.gurinovich.googletask.httpclient.HttpClient;

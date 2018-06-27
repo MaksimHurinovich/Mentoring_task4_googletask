@@ -1,4 +1,4 @@
-package by.gurinovich.googletask.test.google;
+package by.gurinovich.googletask.test.desktop.google;
 
 import by.gurinovich.googletask.guice.GoogleGuiceModule;
 import by.gurinovich.googletask.httpclient.HttpClient;

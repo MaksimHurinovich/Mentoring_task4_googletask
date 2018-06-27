@@ -3,3 +3,4 @@ target/
 *.iml
 chromedriver
 test-output
+logs/

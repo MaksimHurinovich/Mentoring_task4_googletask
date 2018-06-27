@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration monitorInterval="3">
+    <appenders>
+        <File name="FILE" fileName="logs/logs.txt">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%p] %l - %m%n"/>
+        </File>
+    </appenders>
+    <loggers>
+        <root level="debug">
+            <appender-ref ref="FILE"/>
+        </root>
+    </loggers>
+</configuration>

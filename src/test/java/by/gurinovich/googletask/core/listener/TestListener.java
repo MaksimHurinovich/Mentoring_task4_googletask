@@ -1,44 +1,48 @@
 package by.gurinovich.googletask.core.listener;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 public class TestListener implements ITestListener {
 
+    private static Logger LOGGER = LogManager.getLogger(TestListener.class);
+
     @Override
     public void onTestStart(ITestResult iTestResult) {
-        System.out.println("Test " + iTestResult.getName() + " started.");
+        LOGGER.info("Test " + iTestResult.getName() + " started.");
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.println("Test " + iTestResult.getName() + " succeed in "
-                + (iTestResult.getEndMillis()- iTestResult.getStartMillis()) + " millis.");
+        LOGGER.debug("Test " + iTestResult.getName() + " succeed in "
+                + (iTestResult.getEndMillis() - iTestResult.getStartMillis()) + " millis.");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        System.out.println("Test" + iTestResult.getName() + " failed. ");
+        LOGGER.debug("Test" + iTestResult.getName() + " failed. ");
     }
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-        System.out.println("Test " + iTestResult.getName() + " skipped.");
+        LOGGER.debug("Test " + iTestResult.getName() + " skipped.");
     }
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
-        System.out.println("Test " + iTestResult.getName() + " failed within success percentage.");
+        LOGGER.debug("Test " + iTestResult.getName() + " failed within success percentage.");
     }
 
     @Override
     public void onStart(ITestContext iTestContext) {
-        System.out.println(iTestContext.getName() + " started.");
+        LOGGER.info(iTestContext.getName() + " started.");
     }
 
     @Override
     public void onFinish(ITestContext iTestContext) {
-        System.out.println(iTestContext.getName() + " finished.");
+        LOGGER.info(iTestContext.getName() + " finished.");
     }
 }
