@@ -2,9 +2,9 @@ package by.gurinovich.googletask.pageobject;
 
 import org.openqa.selenium.WebDriver;
 
-public abstract class MainPage extends AbstractPage {
+public abstract class AbstractMainPage extends AbstractPage {
 
-    public MainPage(WebDriver driver) {
+    public AbstractMainPage(WebDriver driver) {
         super(driver);
     }
 

@@ -8,6 +8,8 @@ import by.gurinovich.googletask.pageobject.yandex.YandexSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
 import by.gurinovich.googletask.util.TextUtil;
 import com.google.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Guice;
@@ -21,6 +23,7 @@ import java.util.List;
 @Guice(modules = YandexGuiceModule.class)
 public class YandexTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(YandexTest.class);
     @Inject
     private YandexMainPage mainPage;
     @Inject
@@ -29,19 +32,22 @@ public class YandexTest {
     @Test
     public void yandexTitleCheck() {
         mainPage.navigateToMain();
+        LOGGER.debug("Title is " + mainPage.getDriver().getTitle());
         Assert.assertEquals(mainPage.getDriver().getTitle(), "Яндекс", "ERROR: title is not correct.");
     }
 
     @Test(dataProvider = "yandexDP")
     public void linkContainsRequestTest(String request) {
+        mainPage.navigateToMain();
         SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
+        LOGGER.debug("Request contains: " + wordsInRequest);
         for (int i = 0; i < 5; i++) {
             List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(i));
+            LOGGER.debug("Link #" + i + " contains: " + linkTextWords);
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i + ": " + wordsInRequest + " " + linkTextWords);
         }
-        mainPage.navigateToMain();
         softAssert.assertAll();
     }
 
@@ -49,20 +55,22 @@ public class YandexTest {
     public void badRequestsTest(String request) {
         mainPage.doSearch(request);
         int resultsSize = resultsPage.searchResultsSize();
+        LOGGER.debug("On request '" + request + "' searchResultSize " + resultsSize);
         mainPage.navigateToMain();
         Assert.assertEquals(resultsSize, 0, "ERROR: in bad request " + request);
     }
 
     @Test(dataProvider = "yandexDP")
     public void checkStatusCodesTest(String request) {
+        mainPage.navigateToMain();
         SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
         HttpClient client = new HttpClient();
         for(int i = 0; i < resultsPage.searchResultsSize() - 3; i++){
             HttpResponse response = client.get(resultsPage.getLinkURL(i));
+            LOGGER.debug("On request '" + request + "' link #" + i + " has status code " + response.getStatusCode());
             softAssert.assertEquals(response.getStatusCode(), 200, "Link#" + i + " has wrong status code,");
         }
-        mainPage.navigateToMain();
         softAssert.assertAll();
     }
 

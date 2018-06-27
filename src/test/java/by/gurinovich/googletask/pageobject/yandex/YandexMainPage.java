@@ -1,7 +1,6 @@
 package by.gurinovich.googletask.pageobject.yandex;
 
-import by.gurinovich.googletask.pageobject.AbstractPage;
-import by.gurinovich.googletask.pageobject.MainPage;
+import by.gurinovich.googletask.pageobject.AbstractMainPage;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +10,7 @@ import org.openqa.selenium.support.ui.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class YandexMainPage extends MainPage {
+public class YandexMainPage extends AbstractMainPage {
 
     private final String YANDEX_URL = "https://yandex.ru/";
 

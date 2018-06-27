@@ -1,14 +1,13 @@
 package by.gurinovich.googletask.pageobject.yandex;
 
-import by.gurinovich.googletask.pageobject.AbstractPage;
-import by.gurinovich.googletask.pageobject.ResultPage;
+import by.gurinovich.googletask.pageobject.AbstractResultPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class YandexSearchResultsPage extends ResultPage {
+public class YandexSearchResultsPage extends AbstractResultPage {
 
     @FindBy(xpath = "//li[@class = 'serp-item']//h2/a")
     private List<WebElement> searchResults;

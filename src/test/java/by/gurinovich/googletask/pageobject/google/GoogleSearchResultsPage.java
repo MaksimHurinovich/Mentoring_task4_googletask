@@ -1,14 +1,13 @@
 package by.gurinovich.googletask.pageobject.google;
 
-import by.gurinovich.googletask.pageobject.AbstractPage;
-import by.gurinovich.googletask.pageobject.ResultPage;
+import by.gurinovich.googletask.pageobject.AbstractResultPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class GoogleSearchResultsPage extends ResultPage {
+public class GoogleSearchResultsPage extends AbstractResultPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 

@@ -58,7 +58,7 @@ public class HttpClient {
             for (Header header : headers) {
                 put(header.getName(), header.getValue());
             }
-            put("content-length", Integer.toString(contentLength));
+            put("Content-Length", Integer.toString(contentLength));
         }});
         response.setResponseContent(content);
         return response;

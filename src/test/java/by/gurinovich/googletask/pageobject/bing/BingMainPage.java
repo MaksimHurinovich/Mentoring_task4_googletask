@@ -1,11 +1,9 @@
 package by.gurinovich.googletask.pageobject.bing;
 
-import by.gurinovich.googletask.pageobject.AbstractPage;
-import by.gurinovich.googletask.pageobject.MainPage;
+import by.gurinovich.googletask.pageobject.AbstractMainPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -15,7 +13,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 
-public class BingMainPage extends MainPage {
+public class BingMainPage extends AbstractMainPage {
 
     private final String BING_URL = "https://bing.com/";
 

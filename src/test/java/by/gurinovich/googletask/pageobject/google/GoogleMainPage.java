@@ -1,7 +1,6 @@
 package by.gurinovich.googletask.pageobject.google;
 
-import by.gurinovich.googletask.pageobject.AbstractPage;
-import by.gurinovich.googletask.pageobject.MainPage;
+import by.gurinovich.googletask.pageobject.AbstractMainPage;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +14,7 @@ import java.util.NoSuchElementException;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class GoogleMainPage extends MainPage {
+public class GoogleMainPage extends AbstractMainPage {
 
     private final String GOOGLE_URL = "https://google.com/";
 

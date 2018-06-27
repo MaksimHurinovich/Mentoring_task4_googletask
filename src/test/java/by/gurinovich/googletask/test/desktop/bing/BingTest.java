@@ -8,6 +8,8 @@ import by.gurinovich.googletask.pageobject.bing.BingSearchResultsPage;
 import by.gurinovich.googletask.util.JsonRequestsManager;
 import by.gurinovich.googletask.util.TextUtil;
 import com.google.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Guice;
@@ -22,6 +24,7 @@ import java.util.List;
 @Guice(modules = BingGuiceModule.class)
 public class BingTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(BingTest.class);
     @Inject
     private BingMainPage mainPage;
     @Inject
@@ -32,8 +35,10 @@ public class BingTest {
         SoftAssert softAssert = new SoftAssert();
         mainPage.doSearch(request);
         List<String> wordsInRequest = TextUtil.textToWords(request);
+        LOGGER.debug("Request contains: " + wordsInRequest);
         for (int i = 0; i < resultsPage.searchResultsSize() - 1; i++) {
             List<String> linkTextWords = TextUtil.textToWords(resultsPage.getLinkText(i));
+            LOGGER.debug("Link #" + i + " contains: " + linkTextWords);
             softAssert.assertFalse(Collections.disjoint(wordsInRequest, linkTextWords), "ERROR in link#" + i + ": " + wordsInRequest + " " + linkTextWords);
         }
         mainPage.navigateToMain();
@@ -44,6 +49,7 @@ public class BingTest {
     public void nothingFoundTest(String request) {
         mainPage.doSearch(request);
         int resultsSize = resultsPage.searchResultsSize();
+        LOGGER.debug("On request '" + request + "' searchResultSize: " + resultsSize);
         mainPage.navigateToMain();
         Assert.assertEquals(resultsSize, 0, "ERROR: in bad request " + request);
     }
@@ -55,6 +61,7 @@ public class BingTest {
         HttpClient client = new HttpClient();
         for(int i = 0; i < resultsPage.searchResultsSize() - 3; i++){
             HttpResponse response = client.get(resultsPage.getLinkURL(i));
+            LOGGER.debug("On request '" + request + "' link #" + i + " has status code " + response.getStatusCode());
             softAssert.assertEquals(response.getStatusCode(), 200, "Link#" + i + " has wrong status code,");
         }
         mainPage.navigateToMain();
