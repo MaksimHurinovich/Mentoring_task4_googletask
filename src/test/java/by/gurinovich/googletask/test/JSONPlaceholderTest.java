@@ -2,10 +2,12 @@ package by.gurinovich.googletask.test;
 
 import by.gurinovich.googletask.httpclient.HttpClient;
 import by.gurinovich.googletask.httpclient.entity.HttpResponse;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class HometaskTest {
+public class JSONPlaceholderTest {
 
     private String url = "https://jsonplaceholder.typicode.com/users";
     private HttpClient client = new HttpClient();
@@ -20,6 +22,14 @@ public class HometaskTest {
     public void contentTypeCheck() {
         HttpResponse response = client.get(url);
         Assert.assertEquals(response.getHeaders().get("Content-Type"), "application/json; charset=utf-8", "ContentType is wrong");
+    }
+
+    @Test
+    public void contentValidationCheck(){
+        HttpResponse response = client.get(url);
+        String content = response.getResponseContent();
+        JsonArray array = new JsonParser().parse(content).getAsJsonArray();
+        Assert.assertEquals(array.size(), 10, "JSON size is not 10.");
     }
 
 }
