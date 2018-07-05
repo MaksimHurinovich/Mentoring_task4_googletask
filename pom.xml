@@ -9,47 +9,50 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
+        <app.browser>${app.browser}</app.browser>
+        <app.parallelMode>${app.parallelMode}</app.parallelMode>
+        <app.xmlName>${app.xmlName}</app.xmlName>
+        <app.requestType>${app.requestType}</app.requestType>
     </properties>
 
     <dependencies>
-    <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-java</artifactId>
-        <version>3.9.1</version>
-    </dependency>
-    <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>6.13.1</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>2.8.2</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.3</version>
-    </dependency>
-    <dependency>
-        <groupId>org.jetbrains</groupId>
-        <artifactId>annotations</artifactId>
-        <version>RELEASE</version>
-        <scope>compile</scope>
-    </dependency>
         <dependency>
-            <groupId>commons-cli</groupId>
-            <artifactId>commons-cli</artifactId>
-            <version>1.2</version>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.14.3</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>4.1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -61,7 +64,8 @@
             <artifactId>log4j-api</artifactId>
             <version>2.10.0</version>
         </dependency>
-</dependencies>
+    </dependencies>
+
 
     <build>
         <finalName>multithredingTest</finalName>
@@ -83,10 +87,9 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
                         <suiteXmlFiles>
-                            <suiteXmlFile>./src/test/resources/test_suite.xml</suiteXmlFile>
+                            <suiteXmlFile>./src/test/resources/${app.xmlName}</suiteXmlFile>
                         </suiteXmlFiles>
-                        <parallel>tests</parallel>
-                        <threadCount>3</threadCount>
+                        <parallel>${app.parallelMode}</parallel>
                     </configuration>
                 </plugin>
                 <plugin>
